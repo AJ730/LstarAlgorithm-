@@ -23,7 +23,8 @@ public class LearningLab {
         observationTable.print();
         MealyMachine hypothesis = observationTable.generateHypothesis();
         hypothesis.writeToDot("hypothesis.dot");
-
+        Optional<Word<String>> counterexample = equivalenceChecker.verify(hypothesis);
+        System.out.println("Counterexample: " + counterexample.toString());
         // Place here your code to learn a model of the RERS problem.
         // Implement the checks for consistent and closed in the observation table.
         // Use the observation table and the equivalence checker to implement the L* learning algorithm.
