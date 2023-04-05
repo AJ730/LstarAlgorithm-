@@ -50,10 +50,21 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
      * You should write your own logic here.
      *
      * @return an Optional.empty() if the table is consistent, or an Optional.of(_)
-     *         with something usefull to extend the observation table with.
+     *         with something useful to extend the observation table with.
      */
     public Optional<Word<String>> checkForClosed() {
         // TODO implement the check for closedness of the observation table.
+        for (Word<String> i: table.keySet()){
+            if (!S.contains(i)){
+                for (Word<String> j: S){
+                    if(i.equals(j)){
+                        return Optional.empty();
+                    }
+                }
+                return Optional.of(i);
+            }
+
+        }
         return Optional.empty();
     }
 
@@ -67,6 +78,16 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
      */
     public Optional<Word<String>> checkForConsistent() {
         // TODO implement the consistency check.
+        for (Word<String> i: S){
+            ArrayList<String> row1 = table.get(i);
+            for (String str: inputSymbols){
+                Word<String> sa = i.append(str);
+                ArrayList<String> row2 = table.get(sa);
+                if (!row1.equals(row2)){
+                    return Optional.of(sa);
+                }
+            }
+        }
         return Optional.empty();
     }
 
