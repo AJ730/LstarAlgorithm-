@@ -17,6 +17,14 @@ public class LearningLab {
 
         SystemUnderLearn sul = new RersSUL();
         observationTable = new ObservationTable(LearningTracker.inputSymbols, sul);
+        while(!observationTable.checkForClosed().isEmpty()){
+            System.out.print("Check closed");
+            observationTable.addToS(observationTable.checkForClosed().get());
+        }
+        while(!observationTable.checkForConsistent().isEmpty()){
+            System.out.print("Check consistent");
+            observationTable.addToE(observationTable.checkForConsistent().get());
+        }
         equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
         // equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 1, observationTable, observationTable);
 

@@ -55,13 +55,19 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
     public Optional<Word<String>> checkForClosed() {
         // TODO implement the check for closedness of the observation table.
         for (Word<String> i: table.keySet()){
+            ArrayList<String> rowSA = table.get(i);
             if (!S.contains(i)){
-                for (Word<String> j: S){
-                    if(i.equals(j)){
-                        return Optional.empty();
+                int count = 0;
+                for (Word<String> j: S) {
+                    ArrayList<String> rowS = table.get(j);
+                    if (rowSA.equals(rowS)) {
+                        count++;
+                        break;
                     }
                 }
-                return Optional.of(i);
+                if (count == 0) {
+                    return Optional.of(i);
+                }
             }
 
         }
@@ -79,12 +85,20 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
     public Optional<Word<String>> checkForConsistent() {
         // TODO implement the consistency check.
         for (Word<String> i: S){
-            ArrayList<String> row1 = table.get(i);
-            for (String str: inputSymbols){
-                Word<String> sa = i.append(str);
-                ArrayList<String> row2 = table.get(sa);
-                if (!row1.equals(row2)){
-                    return Optional.of(sa);
+            ArrayList<String> rowS1 = table.get(i);
+            for (Word<String> j: S){
+                ArrayList<String> rowS2 = table.get(j);
+                if (rowS1.equals(rowS2)) {
+                    for (String str : inputSymbols) {
+                        Word<String> sa1 = i.append(str);
+                        Word<String> sa2 = j.append(str);
+                        ArrayList<String> rowsa1 = table.get(sa1);
+                        ArrayList<String> rowsa2 = table.get(sa2);
+                        if (!rowsa1.equals(rowsa2)) {
+                            Word<String> distinguish = getDistinguishingSequences().get(getDistinguishingSequences().size() - 1);
+                            return Optional.of(distinguish.append(str));
+                        }
+                    }
                 }
             }
         }
