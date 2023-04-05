@@ -27,7 +27,6 @@ target/
 
 
 # Lab specific
-instrumented/
 instrumented_fuzzing/
 instrumented_symbolic/
 RERS/
@@ -39,3 +38,5 @@ RERS/
 RERS2020Buggy/
 scripts/
 *.dot
+branch-coverage.json
+line-coverage.json
