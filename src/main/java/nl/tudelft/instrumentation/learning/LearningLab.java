@@ -17,18 +17,9 @@ public class LearningLab {
 
         SystemUnderLearn sul = new RersSUL();
         observationTable = new ObservationTable(LearningTracker.inputSymbols, sul);
-        while(!observationTable.checkForClosed().isEmpty()){
-            System.out.print("Check closed");
-            observationTable.addToS(observationTable.checkForClosed().get());
-        }
-        while(!observationTable.checkForConsistent().isEmpty()){
-            System.out.print("Check consistent");
-            observationTable.addToE(observationTable.checkForConsistent().get());
-        }
-        equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
-        // equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 1, observationTable, observationTable);
-
-        observationTable.print();
+        preprocessing();
+//        equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
+        equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 1, observationTable, observationTable);
         MealyMachine hypothesis = observationTable.generateHypothesis();
         Optional<Word<String>> counterexample = equivalenceChecker.verify(hypothesis);
         System.out.println("Counterexample: " + counterexample.toString());
@@ -39,6 +30,19 @@ public class LearningLab {
 //            equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 1, observationTable, observationTable);
             counterexample = equivalenceChecker.verify(newHypothesis);
             System.out.println("Counterexample: " + counterexample.toString());
+        }
+        hypothesis.writeToDot("hypothesis.dot");
+        observationTable.print();
+    }
+
+    private static void preprocessing() {
+        while(!observationTable.checkForClosed().isEmpty()){
+            System.out.print("Check closed");
+            observationTable.addToS(observationTable.checkForClosed().get());
+        }
+        while(!observationTable.checkForConsistent().isEmpty()){
+            System.out.print("Check consistent");
+            observationTable.addToE(observationTable.checkForConsistent().get());
         }
     }
 
