@@ -30,24 +30,28 @@ public class LearningLab {
 
         observationTable.print();
         MealyMachine hypothesis = observationTable.generateHypothesis();
-        hypothesis.writeToDot("hypothesis.dot");
         Optional<Word<String>> counterexample = equivalenceChecker.verify(hypothesis);
         System.out.println("Counterexample: " + counterexample.toString());
-        // Place here your code to learn a model of the RERS problem.
-        // Implement the checks for consistent and closed in the observation table.
-        // Use the observation table and the equivalence checker to implement the L* learning algorithm.
-        while (!isFinished) {
-            // Do things!
-            try {
-                System.out.println("Woohoo, looping!");
-                System.exit(1);
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while (counterexample.isPresent()){
+            processCounterexample(counterexample.get());
+            preprocessing();
+            MealyMachine newHypothesis = observationTable.generateHypothesis();
+//            equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 1, observationTable, observationTable);
+            counterexample = equivalenceChecker.verify(newHypothesis);
+            System.out.println("Counterexample: " + counterexample.toString());
         }
     }
 
+    public static void processCounterexample(Word<String> counterExample){
+        var counterExamplleList = counterExample.asList();
+        for (int i = 0; i < counterExamplleList.size(); i++) {
+            var list = counterExamplleList.subList(0, i);
+            var wordList = new Word<String>();
+            wordList = wordList.append(list);
+            observationTable.addToS(wordList);
+            observationTable.addToE(wordList);
+        }
+    }
 
     /**
      * Method that is used for catching the output from standard out.

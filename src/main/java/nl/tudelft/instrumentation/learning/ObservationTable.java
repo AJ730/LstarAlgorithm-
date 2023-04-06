@@ -21,14 +21,14 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
     private static final String LAMBDA = " ";
     private static final Word<String> EMPTY = new Word<>();
 
-    private String[] inputSymbols;
+    public String[] inputSymbols;
 
     private List<Word<String>> S;
     private List<Word<String>> E;
 
     // The actual observations: a map with (S u S A) as keys where each value
     // (row) represents the observations corresponding to (S u S A) E.
-    private Map<Word<String>, ArrayList<String>> table;
+    public Map<Word<String>, ArrayList<String>> table;
     private SystemUnderLearn sul;
 
     public ObservationTable(String[] inputSymbols, SystemUnderLearn sul) {
@@ -95,8 +95,13 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
                         ArrayList<String> rowsa1 = table.get(sa1);
                         ArrayList<String> rowsa2 = table.get(sa2);
                         if (!rowsa1.equals(rowsa2)) {
-                            Word<String> distinguish = getDistinguishingSequences().get(getDistinguishingSequences().size() - 1);
-                            return Optional.of(distinguish.append(str));
+                            for (int k = 0; k < rowsa1.size(); k++) {
+                                if(!rowsa1.get(k).equals(rowsa2.get(k))){
+                                    var w = new Word<String>();
+                                    w = w.append(str).append(E.get(k));
+                                    return Optional.of(w);
+                                }
+                            }
                         }
                     }
                 }
@@ -105,7 +110,7 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
         return Optional.empty();
     }
 
-    private String getResultFromSul(Word<String> trace) {
+    public String getResultFromSul(Word<String> trace) {
         String res = sul.getLastOutput(trace);
         // System.out.printf("Output for trace %s is %s\n", trace, res);
         return res;

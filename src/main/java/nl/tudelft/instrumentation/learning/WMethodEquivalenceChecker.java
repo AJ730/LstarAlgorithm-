@@ -20,5 +20,4 @@ public class WMethodEquivalenceChecker extends EquivalenceChecker{
         // TODO implement the W-method equivalence checker
         throw new RuntimeException("Unimplemented method 'verify'");
     }
-
 }
