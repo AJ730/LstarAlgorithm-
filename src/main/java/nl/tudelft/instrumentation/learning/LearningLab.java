@@ -25,8 +25,8 @@ public class LearningLab {
         SystemUnderLearn sul = new RersSUL();
         observationTable = new ObservationTable(LearningTracker.inputSymbols, sul);
         preprocessing();
-       equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
-//        equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 4, observationTable, observationTable);
+//       equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
+        equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 4, observationTable, observationTable);
         MealyMachine hypothesis = observationTable.generateHypothesis();
         Optional<Word<String>> counterexample = equivalenceChecker.verify(hypothesis);
         System.out.println("Here is the counter example: " + counterexample);
@@ -35,7 +35,8 @@ public class LearningLab {
             preprocessing();
             MealyMachine newHypothesis = observationTable.generateHypothesis();
             counterexample = equivalenceChecker.verify(newHypothesis);
-            timeMap.add(observationTable.S.size());
+            Set<Word<String>> set = new HashSet<>(observationTable.S);
+            timeMap.add(set.size());
         }
 
         hypothesis.writeToDot("hypothesis.dot");
