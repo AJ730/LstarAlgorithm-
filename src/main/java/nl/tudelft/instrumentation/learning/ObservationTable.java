@@ -22,7 +22,7 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
     private static final Word<String> EMPTY = new Word<>();
 
     public String[] inputSymbols;
-    public List<Word<String>> S;
+    private List<Word<String>> S;
     private List<Word<String>> E;
 
     // The actual observations: a map with (S u S A) as keys where each value

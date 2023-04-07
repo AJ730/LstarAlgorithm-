@@ -10,8 +10,6 @@ import java.util.*;
 public class LearningLab {
     static Random r = new Random();
     static int traceLength = 10;
-    static boolean isFinished = false;
-
     static ObservationTable observationTable;
     static EquivalenceChecker equivalenceChecker;
 
@@ -29,13 +27,12 @@ public class LearningLab {
         equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 4, observationTable, observationTable);
         MealyMachine hypothesis = observationTable.generateHypothesis();
         Optional<Word<String>> counterexample = equivalenceChecker.verify(hypothesis);
-        System.out.println("Here is the counter example: " + counterexample);
         while (counterexample.isPresent()) {
             processCounterexample(counterexample.get());
             preprocessing();
-            MealyMachine newHypothesis = observationTable.generateHypothesis();
-            timeMap.add(getNumberOfStates(observationTable.S));
-            counterexample = equivalenceChecker.verify(newHypothesis);
+            hypothesis = observationTable.generateHypothesis();
+            timeMap.add(getNumberOfStates(observationTable.getAccessSequences()));
+            counterexample = equivalenceChecker.verify(hypothesis);
         }
 
         hypothesis.writeToDot("hypothesis.dot");
@@ -72,7 +69,6 @@ public class LearningLab {
             var wordList = new Word<String>();
             wordList = wordList.append(list);
             observationTable.addToS(wordList);
-            observationTable.addToE(wordList);
         }
     }
 
