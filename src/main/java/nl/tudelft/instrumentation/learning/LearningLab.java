@@ -34,9 +34,8 @@ public class LearningLab {
             processCounterexample(counterexample.get());
             preprocessing();
             MealyMachine newHypothesis = observationTable.generateHypothesis();
+            timeMap.add(getNumberOfStates(observationTable.S));
             counterexample = equivalenceChecker.verify(newHypothesis);
-            Set<Word<String>> set = new HashSet<>(observationTable.S);
-            timeMap.add(set.size());
         }
 
         hypothesis.writeToDot("hypothesis.dot");
@@ -56,6 +55,14 @@ public class LearningLab {
         while(!observationTable.checkForConsistent().isEmpty()){
             observationTable.addToE(observationTable.checkForConsistent().get());
         }
+    }
+
+    public static int getNumberOfStates(List<Word<String>> states){
+        Set<ArrayList<String>> set = new HashSet<>();
+        for (Word<String> element : states){
+            set.add(observationTable.table.get(element));
+        }
+        return set.size();
     }
 
     public static void processCounterexample(Word<String> counterExample){
