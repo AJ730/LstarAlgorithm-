@@ -27,7 +27,6 @@ public class LearningLab {
             processCounterexample(counterexample.get());
             preprocessing();
             MealyMachine newHypothesis = observationTable.generateHypothesis();
-//            equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 1, observationTable, observationTable);
             counterexample = equivalenceChecker.verify(newHypothesis);
             System.out.println("Counterexample: " + counterexample.toString());
         }

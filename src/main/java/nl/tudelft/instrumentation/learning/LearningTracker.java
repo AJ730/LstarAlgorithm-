@@ -94,7 +94,6 @@ public class LearningTracker {
         }
         assert outputs.size() == sequence.length;
         return outputs.toArray(new String[0]);
-
     }
 
     public static void processedInput() {
