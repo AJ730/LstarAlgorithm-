@@ -21,31 +21,21 @@ public class LearningLab {
 
     static void run() {
         final long start = System.currentTimeMillis();
-        long time = System.currentTimeMillis();
         timeMap.add(0);
         SystemUnderLearn sul = new RersSUL();
         observationTable = new ObservationTable(LearningTracker.inputSymbols, sul);
         preprocessing();
-//       equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
-        equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 2, observationTable, observationTable);
+       equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
+//        equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 4, observationTable, observationTable);
         MealyMachine hypothesis = observationTable.generateHypothesis();
         Optional<Word<String>> counterexample = equivalenceChecker.verify(hypothesis);
-
+        System.out.println("Here is the counter example: " + counterexample);
         while (counterexample.isPresent()) {
-            System.out.println("We entered the while loop");
             processCounterexample(counterexample.get());
             preprocessing();
             MealyMachine newHypothesis = observationTable.generateHypothesis();
             counterexample = equivalenceChecker.verify(newHypothesis);
-
-            final long end200 = System.currentTimeMillis();
-            long timegap = end200 - time;
-            if (timegap > 1000) {
-                System.out.println("Time map reached");
-                int nmrStates = observationTable.count;
-                timeMap.add(nmrStates);
-                time = System.currentTimeMillis();
-            }
+            timeMap.add(observationTable.S.size());
         }
 
         hypothesis.writeToDot("hypothesis.dot");

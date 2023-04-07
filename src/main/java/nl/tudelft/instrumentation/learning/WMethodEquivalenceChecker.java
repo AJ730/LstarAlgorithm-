@@ -33,20 +33,19 @@ public class WMethodEquivalenceChecker extends EquivalenceChecker{
             Word<String> randElemS = s.get(randS);
 
             Word<String> finalI = new Word<String>();
-            for (int i = 0; i < this.inputSymbols.length; i++) {
+            for (int i = 0; i < w; i++) {
                 String curr = inputSymbols[random.nextInt(inputSymbols.length)];
-                finalI.append(curr);
+                finalI = finalI.append(curr);
             }
 
             int randE = random.nextInt(e.size());
             Word<String> randElemE = e.get(randE);
+
             var append = randElemS.append(finalI);
             append = append.append(randElemE);
 
-
             String modelOutput = hypothesis.getLastOutput(append);
             String realOutput = sul.getLastOutput(append);
-
             if (!modelOutput.equals(realOutput)) {
                 return Optional.of(append);
             }

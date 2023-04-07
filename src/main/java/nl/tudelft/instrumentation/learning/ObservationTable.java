@@ -22,10 +22,7 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
     private static final Word<String> EMPTY = new Word<>();
 
     public String[] inputSymbols;
-
-    public int count;
-
-    private List<Word<String>> S;
+    public List<Word<String>> S;
     private List<Word<String>> E;
 
     // The actual observations: a map with (S u S A) as keys where each value
@@ -125,7 +122,7 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
      *               alphabet
      */
     public void addToS(Word<String> prefix) {
-        System.out.printf("Adding %s to S\n", prefix);
+//        System.out.printf("Adding %s to S\n", prefix);
         if (!S.contains(prefix)) {
             S.add(prefix);
             addRow(prefix);
@@ -142,7 +139,7 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
      *               alphabet
      */
     public void addToE(Word<String> suffix) {
-        System.out.printf("Adding %s to E\n", suffix);
+//        System.out.printf("Adding %s to E\n", suffix);
         if (!E.contains(suffix)) {
             E.add(suffix);
             for (Entry<Word<String>, ArrayList<String>> entry : table.entrySet()) {
@@ -230,7 +227,6 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
             }
         }
         MealyState initialState = states.get(rowToKey(table.get(EMPTY)));
-        count = numStates;
         return new MealyMachine(initialState);
     }
 
