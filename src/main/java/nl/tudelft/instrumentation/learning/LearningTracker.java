@@ -16,6 +16,8 @@ public class LearningTracker {
     static String[] inputSymbols;
     static String currentOutput = "";
     static int current_index = 0;
+
+    static int membershipQuery = 0;
     static List<String> outputs = new ArrayList<>();
     static ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
     static CallableTraceRunner<Void> problem;
@@ -93,6 +95,7 @@ public class LearningTracker {
             System.exit(-1);
         }
         assert outputs.size() == sequence.length;
+        membershipQuery++;
         return outputs.toArray(new String[0]);
     }
 

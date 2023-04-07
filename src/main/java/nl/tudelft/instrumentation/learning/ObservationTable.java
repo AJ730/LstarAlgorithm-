@@ -23,6 +23,8 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
 
     public String[] inputSymbols;
 
+    public int count;
+
     private List<Word<String>> S;
     private List<Word<String>> E;
 
@@ -228,6 +230,7 @@ public class ObservationTable implements DistinguishingSequenceGenerator, Access
             }
         }
         MealyState initialState = states.get(rowToKey(table.get(EMPTY)));
+        count = numStates;
         return new MealyMachine(initialState);
     }
 

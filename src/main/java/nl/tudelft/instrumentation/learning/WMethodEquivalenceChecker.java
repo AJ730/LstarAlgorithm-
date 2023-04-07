@@ -26,23 +26,23 @@ public class WMethodEquivalenceChecker extends EquivalenceChecker{
         // TODO implement the W-method equivalence checker
         var e  = distinguishingSequenceGenerator.getDistinguishingSequences();
         var s = accessSequenceGenerator.getAccessSequences();
-        var time = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
 
         while (true) {
             int randS = random.nextInt(s.size());
             Word<String> randElemS = s.get(randS);
 
-
-            StringBuilder sr = new StringBuilder();
-            for (int i = 0; i < w; i++) {
-                int randI = random.nextInt(this.inputSymbols.length);
-                sr.append(inputSymbols[randI]);
+            Word<String> finalI = new Word<String>();
+            for (int i = 0; i < this.inputSymbols.length; i++) {
+                String curr = inputSymbols[random.nextInt(inputSymbols.length)];
+                finalI.append(curr);
             }
-            var finalI = sr.toString();
 
             int randE = random.nextInt(e.size());
             Word<String> randElemE = e.get(randE);
-            var append = randElemS.append(finalI).append(randElemE);
+            var append = randElemS.append(finalI);
+            append = append.append(randElemE);
+
 
             String modelOutput = hypothesis.getLastOutput(append);
             String realOutput = sul.getLastOutput(append);
@@ -51,7 +51,7 @@ public class WMethodEquivalenceChecker extends EquivalenceChecker{
                 return Optional.of(append);
             }
 
-            if(System.currentTimeMillis() - time < 5000){
+            if(System.currentTimeMillis() - time > 10000){
                 return Optional.empty();
             }
         }

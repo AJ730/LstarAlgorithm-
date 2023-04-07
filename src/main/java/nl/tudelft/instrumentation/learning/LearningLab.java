@@ -1,5 +1,7 @@
 package nl.tudelft.instrumentation.learning;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.*;
 
 /**
@@ -13,34 +15,54 @@ public class LearningLab {
     static ObservationTable observationTable;
     static EquivalenceChecker equivalenceChecker;
 
-    static void run() {
+    static ArrayList<Integer> timeMap = new ArrayList<>();
 
+    static long runtime = 0;
+
+    static void run() {
+        final long start = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
+        timeMap.add(0);
         SystemUnderLearn sul = new RersSUL();
         observationTable = new ObservationTable(LearningTracker.inputSymbols, sul);
         preprocessing();
-//        equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
-        equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 1, observationTable, observationTable);
+//       equivalenceChecker = new RandomWalkEquivalenceChecker(sul, LearningTracker.inputSymbols, 100, 1000);
+        equivalenceChecker = new WMethodEquivalenceChecker(sul, LearningTracker.inputSymbols, 2, observationTable, observationTable);
         MealyMachine hypothesis = observationTable.generateHypothesis();
         Optional<Word<String>> counterexample = equivalenceChecker.verify(hypothesis);
-        System.out.println("Counterexample: " + counterexample.toString());
-        while (counterexample.isPresent()){
+
+        while (counterexample.isPresent()) {
+            System.out.println("We entered the while loop");
             processCounterexample(counterexample.get());
             preprocessing();
             MealyMachine newHypothesis = observationTable.generateHypothesis();
             counterexample = equivalenceChecker.verify(newHypothesis);
-            System.out.println("Counterexample: " + counterexample.toString());
+
+            final long end200 = System.currentTimeMillis();
+            long timegap = end200 - time;
+            if (timegap > 1000) {
+                System.out.println("Time map reached");
+                int nmrStates = observationTable.count;
+                timeMap.add(nmrStates);
+                time = System.currentTimeMillis();
+            }
         }
+
         hypothesis.writeToDot("hypothesis.dot");
-        observationTable.print();
+        final long end = System.currentTimeMillis();
+        long runtime  = end - start;
+
+        System.out.println("Number of states: " + timeMap.get(timeMap.size()-1));
+        System.out.println("Time map: " + timeMap);
+        System.out.println("Runtime (in ms): "+ runtime);
+        System.out.println("Membership queries: "+ LearningTracker.membershipQuery);
     }
 
     private static void preprocessing() {
         while(!observationTable.checkForClosed().isEmpty()){
-            System.out.print("Check closed");
             observationTable.addToS(observationTable.checkForClosed().get());
         }
         while(!observationTable.checkForConsistent().isEmpty()){
-            System.out.print("Check consistent");
             observationTable.addToE(observationTable.checkForConsistent().get());
         }
     }
