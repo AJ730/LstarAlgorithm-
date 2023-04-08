@@ -37,6 +37,5 @@ RERS/
 .vscode/
 RERS2020Buggy/
 scripts/
-*.dot
 branch-coverage.json
 line-coverage.json
