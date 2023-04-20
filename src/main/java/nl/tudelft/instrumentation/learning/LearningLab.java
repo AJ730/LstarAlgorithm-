@@ -52,6 +52,9 @@ public class LearningLab {
         while(!observationTable.checkForConsistent().isEmpty()){
             observationTable.addToE(observationTable.checkForConsistent().get());
         }
+        while(!observationTable.checkForClosed().isEmpty()){
+            observationTable.addToS(observationTable.checkForClosed().get());
+        }
     }
 
     public static int getNumberOfStates(List<Word<String>> states){
