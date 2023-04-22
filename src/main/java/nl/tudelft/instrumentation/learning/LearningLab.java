@@ -43,6 +43,8 @@ public class LearningLab {
         System.out.println("Time map: " + timeMap);
         System.out.println("Runtime (in ms): "+ runtime);
         System.out.println("Membership queries: "+ LearningTracker.membershipQuery);
+//        LearnLibRunner llr = new LearnLibRunner();
+//        llr.start(4);
     }
 
     private static void preprocessing() {

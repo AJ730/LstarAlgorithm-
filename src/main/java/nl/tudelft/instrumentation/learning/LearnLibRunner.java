@@ -66,8 +66,8 @@ public class LearnLibRunner {
                 .withOracle(m)
                 .create();
 
-        MealyLearner<String, String> learner = lstar;
-        // MealyLearner<String, String> learner = ttt;
+//        MealyLearner<String, String> learner = lstar;
+         MealyLearner<String, String> learner = ttt;
 
         // construct a W-method conformance test exploring the system up to depth
         // EXPLORATION_DEPTH from every state of a hypothesis
