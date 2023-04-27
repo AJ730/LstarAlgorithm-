@@ -1,4 +1,3 @@
-import networkx as nx
 from networkx import *
 
 G1 = nx_pydot.read_dot("hypothesis_problemPin.dot")
